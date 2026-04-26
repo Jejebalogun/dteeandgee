@@ -13,8 +13,16 @@ _project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 if _project_root not in sys.path:
     sys.path.insert(0, _project_root)
 
-# Import the Flask app — Vercel WSGI handler expects a variable named `app`
-# Wrap in try/except so import errors surface as readable JSON instead of a crash
+# Load .env from backend directory for Vercel (local dev loads it from cwd)
+from dotenv import load_dotenv
+_env_path = os.path.join(_backend_dir, '.env')
+if os.path.exists(_env_path):
+    load_dotenv(_env_path)
+
+# IMPORTANT: Declare `app` at the TOP LEVEL so Vercel's builder can always find it.
+# Vercel's @vercel/python builder scans for a top-level `app` variable.
+app = None
+
 try:
     from src.main import app
 except Exception as _import_error:
@@ -34,3 +42,6 @@ except Exception as _import_error:
             'detail': str(_import_error),
             'traceback': _tb
         }), 500
+
+# Vercel also checks for a `handler` variable as an alternative entry point
+handler = app
