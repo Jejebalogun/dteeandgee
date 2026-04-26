@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Tee & Gee Kitchen - Natural Food & Drinks</title>
+    <meta name="description" content="Fresh natural drinks, smoothies, parfaits, zobo drinks, yogurt, chin chin, and small chops delivered to your doorstep.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css?v=11">
+    <link rel="stylesheet" href="css/responsive.css?v=11">
+    <link rel="stylesheet" href="css/animations.css?v=11">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/Logo.jpg">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <img src="images/Logo.jpg" alt="D'Tee & Gee Kitchen" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Preparing your delicious experience...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="images/Logo.jpg" alt="D'Tee & Gee Kitchen" class="nav-logo">
+                <span class="nav-brand-text">D'Tee & Gee Kitchen</span>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#menu" class="nav-link">Menu</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="search-toggle" id="search-toggle" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="cart-toggle" id="cart-toggle" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+                <div class="user-menu-container" id="user-menu-container">
+                    <button class="auth-toggle" id="auth-toggle" aria-label="Account">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <!-- User Dropdown Menu (shown when authenticated) -->
+                    <div class="user-dropdown" id="user-dropdown">
+                        <div class="user-dropdown-header">
+                            <span class="user-avatar" id="user-avatar">U</span>
+                            <div class="user-info">
+                                <span class="user-name" id="dropdown-user-name">User</span>
+                                <span class="user-email" id="dropdown-user-email">user@email.com</span>
+                            </div>
+                        </div>
+                        <div class="user-dropdown-menu">
+                            <a href="/dashboard.html" class="dropdown-item" id="my-dashboard-btn">
+                                <i class="fas fa-home"></i> My Dashboard
+                            </a>
+                            <a href="/dashboard.html#orders" class="dropdown-item" id="my-orders-btn">
+                                <i class="fas fa-receipt"></i> My Orders
+                            </a>
+                            <a href="/dashboard.html#wishlist" class="dropdown-item" id="my-wishlist-btn">
+                                <i class="fas fa-heart"></i> My Wishlist
+                            </a>
+                            <a href="/dashboard.html#profile" class="dropdown-item" id="my-profile-btn">
+                                <i class="fas fa-user-edit"></i> My Profile
+                            </a>
+                            <a href="/admin.html" class="dropdown-item admin-dashboard-link" id="admin-dashboard-btn" style="display: none;">
+                                <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item logout-item" id="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-bar" id="search-bar">
+            <div class="search-container">
+                <input type="text" placeholder="Search for products..." id="search-input" autocomplete="off">
+                <button class="search-btn" id="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="search-suggestions">
+                    <ul class="suggestions-list" id="suggestions-list">
+                        <!-- Search suggestions will be loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-video">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/video.mp4" type="video/mp4">
+                    <!-- Fallback image if video doesn't load -->
+                </video>
+                <div class="hero-overlay"></div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="hero-title-main">Delicious Food</span>
+                        <span class="hero-title-sub">Made with Love</span>
+                    </h1>
+                    <p class="hero-description">
+                        Experience the finest natural flavored drinks, smoothies, parfaits, and traditional Nigerian delicacies crafted with premium ingredients and delivered fresh to your doorstep.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary hero-cta" id="order-now-btn">
+                            <span>Order Now</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn btn-secondary hero-cta" id="view-menu-btn">
+                            <span>View Menu</span>
+                            <i class="fas fa-utensils"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <div class="scroll-mouse">
+                    <div class="scroll-wheel"></div>
+                </div>
+                <p>Scroll to explore</p>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="categories">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Categories</h2>
+                    <p class="section-subtitle">Discover our wide range of natural and delicious offerings</p>
+                </div>
+                
+                <div class="categories-grid" id="categories-grid">
+                    <!-- Categories will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section id="featured" class="featured-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Products</h2>
+                    <p class="section-subtitle">Try our most popular and freshly made items</p>
+                </div>
+                
+                <div class="products-grid" id="featured-products">
+                    <!-- Featured products will be loaded dynamically -->
+                </div>
+                
+                <div class="section-actions">
+                    <button class="btn btn-outline" id="view-all-products">
+                        <span>View All Products</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="menu">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Menu</h2>
+                    <p class="section-subtitle">Browse our complete collection of natural foods and drinks</p>
+                </div>
+
+                <!-- Category Filter Tabs -->
+                <div class="menu-filters" id="menu-filters">
+                    <button class="filter-btn active" data-category="all">All Items</button>
+                    <!-- Category filters will be loaded dynamically -->
+                </div>
+
+                <!-- Advanced Filters & Sort -->
+                <div class="menu-controls">
+                    <div class="menu-search">
+                        <input type="text" placeholder="Search menu..." id="menu-search-input" class="menu-search-input">
+                        <i class="fas fa-search"></i>
+                    </div>
+
+                    <div class="menu-filters-advanced">
+                        <!-- Price Range Filter -->
+                        <div class="filter-dropdown">
+                            <button class="filter-dropdown-btn" id="price-filter-btn">
+                                <i class="fas fa-naira-sign"></i>
+                                <span>Price</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="filter-dropdown-content" id="price-filter-dropdown">
+                                <div class="price-range-inputs">
+                                    <input type="number" id="min-price" placeholder="Min" min="0">
+                                    <span>-</span>
+                                    <input type="number" id="max-price" placeholder="Max" min="0">
+                                </div>
+                                <button class="btn btn-sm btn-primary" id="apply-price-filter">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="filter-dropdown">
+                            <button class="filter-dropdown-btn" id="rating-filter-btn">
+                                <i class="fas fa-star"></i>
+                                <span>Rating</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="filter-dropdown-content" id="rating-filter-dropdown">
+                                <label class="rating-option">
+                                    <input type="radio" name="rating-filter" value="">
+                                    <span>All Ratings</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating-filter" value="4">
+                                    <span><i class="fas fa-star"></i> 4 & Up</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating-filter" value="3">
+                                    <span><i class="fas fa-star"></i> 3 & Up</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating-filter" value="2">
+                                    <span><i class="fas fa-star"></i> 2 & Up</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sort Dropdown -->
+                    <div class="menu-sort">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="newest">Newest</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                <div class="active-filters" id="active-filters" style="display: none;">
+                    <span class="active-filters-label">Active filters:</span>
+                    <div class="active-filters-list" id="active-filters-list">
+                        <!-- Active filter tags will be added dynamically -->
+                    </div>
+                    <button class="clear-filters-btn" id="clear-all-filters">Clear All</button>
+                </div>
+
+                <!-- Products Count -->
+                <div class="products-count" id="products-count">
+                    <span>Showing <strong id="showing-count">0</strong> of <strong id="total-count">0</strong> products</span>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Menu products will be loaded dynamically -->
+                </div>
+
+                <div class="menu-pagination" id="menu-pagination">
+                    <!-- Pagination will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="reviews">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">What Our Customers Say</h2>
+                    <p class="section-subtitle">Real reviews from satisfied customers</p>
+                </div>
+                
+                <div class="reviews-carousel" id="reviews-carousel">
+                    <!-- Reviews will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="section-title">About D'Tee & Gee Kitchen</h2>
+                        <p class="about-description">
+                            At D'Tee & Gee Kitchen, we're passionate about bringing you the finest natural flavored drinks and traditional Nigerian delicacies. Our commitment to quality ingredients and authentic recipes ensures every bite and sip is a delightful experience.
+                        </p>
+                        <div class="about-features">
+                            <div class="feature">
+                                <i class="fas fa-leaf"></i>
+                                <h3>Natural Ingredients</h3>
+                                <p>We use only the freshest, natural ingredients in all our products.</p>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-heart"></i>
+                                <h3>Made with Love</h3>
+                                <p>Every item is carefully crafted with passion and attention to detail.</p>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-truck"></i>
+                                <h3>Fresh Delivery</h3>
+                                <p>Fast and reliable delivery to ensure freshness and quality.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="images/about-chef.jpg" alt="Our Chef" class="chef-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">Got questions? We've got answers</p>
+                </div>
+
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What are your delivery areas?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We currently deliver within Lagos and its environs. Delivery is available to areas including Victoria Island, Lekki, Ikoyi, Ikeja, Surulere, Yaba, and more. Contact us to confirm if we deliver to your specific location.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How long does delivery take?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Delivery typically takes 30-60 minutes within Lagos, depending on your location and traffic conditions. For bulk orders, we recommend placing your order at least 24 hours in advance.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Are your products fresh and natural?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! All our products are made fresh daily using natural ingredients. We don't use artificial preservatives, colors, or flavors. Our smoothies, zobo, and yogurt parfaits are prepared on the same day to ensure maximum freshness and nutritional value.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Do you cater for events and parties?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely! We offer catering services for events of all sizes including birthdays, weddings, corporate events, and parties. We have special bulk pricing and can customize orders to suit your needs. Contact us at least 48 hours before your event.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What payment methods do you accept?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We accept bank transfers, card payments, and cash on delivery. For online orders, you can pay securely through our website. We also accept payments via mobile money and POS on delivery.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Do you accommodate dietary restrictions or allergies?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, we can accommodate various dietary needs. We offer dairy-free, sugar-free, and vegan options. Please mention any allergies or dietary restrictions when placing your order, and we'll do our best to accommodate you. Common allergens in our products may include nuts, dairy, and gluten.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How can I track my order?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Once your order is confirmed, you can track its status through your account on our website. You'll also receive SMS/WhatsApp updates as your order progresses from preparation to delivery. Our order statuses include: Pending, Confirmed, Preparing, Out for Delivery, and Delivered.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What is your refund/return policy?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Due to the perishable nature of our products, we do not accept returns. However, if there's an issue with your order (wrong item, quality concerns), please contact us immediately with photos, and we'll resolve it promptly. Customer satisfaction is our priority!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Get In Touch</h2>
+                    <p class="section-subtitle">We'd love to hear from you</p>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Location</h3>
+                                <p>123 Food Street, Lagos, Nigeria</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h3>Phone</h3>
+                                <p>+234 800 123 4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h3>Email</h3>
+                                <p>hello@dteegee.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3>Hours</h3>
+                                <p>Mon - Sat: 8AM - 8PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="contact-name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="contact-email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="contact-phone" placeholder="Your Phone">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="contact-message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Send Message
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="images/Logo.jpg" alt="D'Tee & Gee Kitchen" class="footer-logo">
+                        <h3>D'Tee & Gee Kitchen</h3>
+                    </div>
+                    <p class="footer-description">
+                        Bringing you the finest natural flavored drinks and traditional Nigerian delicacies with love and care.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i>
+                        <img src="icons/facebook_1400843.png" class="social-icon"></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i>
+                        <img src="icons/instagram_1400845.png" class="social-icon"></a></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i>
+                        <img src="icons/whatsapp_1400855.png" class="social-icon"></a>
+                         <a href="#" aria-label="gmail"><i class="fab fa-gmail"></i>
+                        <img src="icons/gmail_5968534.png" class="social-icon"></a>
+                         <a href="#" aria-label="tiktok"><i class="fab fa-tiktok"></i>
+                        <img src="icons/tik-tok_3046126.png" class="social-icon"></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#menu">Natural Drinks</a></li>
+                        <li><a href="#menu">Smoothies</a></li>
+                        <li><a href="#menu">Parfaits</a></li>
+                        <li><a href="#menu">Small Chops</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get updates on new products and offers</p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 D'Tee & Gee Kitchen. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="whatsapp-float" id="whatsapp-float">
+        <a href="https://wa.me/2348000000000?text=Hello%20D'Tee%20%26%20Gee%20Kitchen!%20I%20have%20an%20inquiry."
+           target="_blank"
+           rel="noopener noreferrer"
+           class="whatsapp-btn"
+           title="Chat with us on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+            <span class="whatsapp-tooltip">Chat with us!</span>
+        </a>
+    </div>
+
+    <!-- Modals -->
+    <!-- Authentication Modal -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="auth-modal-title">Sign In</h2>
+                <button class="modal-close" id="auth-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form class="auth-form" id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="login-username" placeholder="Username or Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                    <div class="auth-forgot">
+                        <a href="#" id="forgot-password-link">Forgot Password?</a>
+                    </div>
+                </form>
+                
+                <!-- Forgot Password Form -->
+                <form class="auth-form hidden" id="forgot-password-form">
+                    <p class="auth-form-desc">Enter your email address and we'll send you a link to reset your password.</p>
+                    <div class="form-group">
+                        <input type="email" id="forgot-email" placeholder="Your email address" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Send Reset Link</button>
+                    <div class="auth-forgot">
+                        <a href="#" id="back-to-login-link">Back to Sign In</a>
+                    </div>
+                </form>
+                
+                <!-- Register Form -->
+                <form class="auth-form hidden" id="register-form">
+                    <div class="form-group">
+                        <input type="text" id="register-username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="register-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="register-firstname" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="register-lastname" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="register-phone" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                
+                <div class="auth-switch">
+                    <p id="auth-switch-text">Don't have an account? <a href="#" id="auth-switch-link">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="modal-close" id="cart-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cart-items">
+                    <!-- Cart items will be loaded dynamically -->
+                </div>
+                <div class="cart-summary" id="cart-summary">
+                    <!-- Cart summary will be loaded dynamically -->
+                </div>
+                <div class="cart-actions">
+                    <button class="btn btn-outline" id="continue-shopping">Continue Shopping</button>
+                    <button class="btn btn-primary" id="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-credit-card"></i> Checkout</h2>
+                <button class="modal-close" id="checkout-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Checkout Progress Steps -->
+                <div class="checkout-progress">
+                    <div class="checkout-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Delivery</div>
+                    </div>
+                    <div class="checkout-step-line"></div>
+                    <div class="checkout-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Review</div>
+                    </div>
+                    <div class="checkout-step-line"></div>
+                    <div class="checkout-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Confirm</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Delivery Information -->
+                <div class="checkout-step-content active" id="checkout-step-1">
+                    <h3><i class="fas fa-map-marker-alt"></i> Delivery Information</h3>
+                    <form class="checkout-form" id="checkout-delivery-form">
+                        <!-- Guest Checkout Fields (shown only for non-logged-in users) -->
+                        <div class="guest-checkout-fields" id="guest-checkout-fields" style="display: none;">
+                            <div class="guest-checkout-header">
+                                <i class="fas fa-user-clock"></i>
+                                <div>
+                                    <strong>Checking out as Guest</strong>
+                                    <span>Already have an account? <a href="#" class="auth-link" onclick="Auth.showAuthModal(); return false;">Sign in</a></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="checkout-guest-name">Full Name <span class="required">*</span></label>
+                                    <input type="text" id="checkout-guest-name" placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-guest-email">Email Address <span class="required">*</span></label>
+                                    <input type="email" id="checkout-guest-email" placeholder="john@example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-address">Delivery Address <span class="required">*</span></label>
+                            <textarea id="checkout-address" placeholder="Enter your full delivery address" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="checkout-phone">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="checkout-phone" placeholder="+234 800 000 0000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-alt-phone">Alternative Phone (Optional)</label>
+                                <input type="tel" id="checkout-alt-phone" placeholder="+234 800 000 0000">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-notes">Delivery Notes (Optional)</label>
+                            <textarea id="checkout-notes" placeholder="Any special instructions for delivery..." rows="2"></textarea>
+                        </div>
+                        <div class="checkout-step-actions">
+                            <button type="button" class="btn btn-outline" id="checkout-back-to-cart">
+                                <i class="fas fa-arrow-left"></i> Back to Cart
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Review & Payment -->
+                <div class="checkout-step-content" id="checkout-step-2">
+                    <h3><i class="fas fa-list-check"></i> Review & Payment</h3>
+                    <div class="checkout-review">
+                        <div class="checkout-items" id="checkout-items">
+                            <!-- Items will be loaded dynamically -->
+                        </div>
+                        <div class="checkout-delivery-summary" id="checkout-delivery-summary">
+                            <!-- Delivery info will be shown here -->
+                        </div>
+                        <div class="checkout-totals" id="checkout-totals">
+                            <!-- Totals will be shown here -->
+                        </div>
+
+                        <!-- Payment Method Selection -->
+                        <div class="payment-method-section">
+                            <h4><i class="fas fa-credit-card"></i> Payment Method</h4>
+                            <div class="payment-methods" id="payment-methods">
+                                <label class="payment-method-option selected" data-method="paystack">
+                                    <input type="radio" name="payment_method" value="paystack" checked>
+                                    <div class="payment-method-content">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div class="payment-method-info">
+                                            <span class="payment-method-name">Pay with Card/Bank</span>
+                                            <span class="payment-method-desc">Pay securely with Paystack (Card, Bank, USSD)</span>
+                                        </div>
+                                        <span class="payment-check"><i class="fas fa-check-circle"></i></span>
+                                    </div>
+                                </label>
+                                <label class="payment-method-option" data-method="bank_transfer">
+                                    <input type="radio" name="payment_method" value="bank_transfer">
+                                    <div class="payment-method-content">
+                                        <i class="fas fa-university"></i>
+                                        <div class="payment-method-info">
+                                            <span class="payment-method-name">Bank Transfer</span>
+                                            <span class="payment-method-desc">Transfer to our bank account</span>
+                                        </div>
+                                        <span class="payment-check"><i class="fas fa-check-circle"></i></span>
+                                    </div>
+                                </label>
+                                <label class="payment-method-option" data-method="cash_on_delivery">
+                                    <input type="radio" name="payment_method" value="cash_on_delivery">
+                                    <div class="payment-method-content">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div class="payment-method-info">
+                                            <span class="payment-method-name">Cash on Delivery</span>
+                                            <span class="payment-method-desc">Pay when your order arrives</span>
+                                        </div>
+                                        <span class="payment-check"><i class="fas fa-check-circle"></i></span>
+                                    </div>
+                                </label>
+                            </div>
+                            <!-- Bank Transfer Details (shown when bank transfer is selected) -->
+                            <div class="bank-transfer-details" id="bank-transfer-details" style="display: none;">
+                                <div class="bank-info-card">
+                                    <h5>Bank Account Details</h5>
+                                    <div class="bank-detail"><strong>Bank:</strong> GTBank</div>
+                                    <div class="bank-detail"><strong>Account Number:</strong> 0123456789</div>
+                                    <div class="bank-detail"><strong>Account Name:</strong> D'Tee & Gee Kitchen</div>
+                                    <p class="bank-note"><i class="fas fa-info-circle"></i> After transfer, your order will be confirmed once payment is verified.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkout-step-actions">
+                        <button type="button" class="btn btn-outline" id="checkout-back-to-delivery">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" id="checkout-place-order">
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Order Confirmation -->
+                <div class="checkout-step-content" id="checkout-step-3">
+                    <div class="checkout-success">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Order Placed Successfully!</h3>
+                        <p class="order-number-display">Order #<span id="confirmed-order-number">DG12345678</span></p>
+                        <p class="success-message">Thank you for your order! We've received your order and will begin preparing it right away.</p>
+                        <div class="success-details">
+                            <div class="detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>A confirmation has been sent to your account.</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Estimated delivery: 30-60 minutes</span>
+                            </div>
+                        </div>
+                        <div class="checkout-step-actions center">
+                            <button type="button" class="btn btn-outline" id="view-order-btn">
+                                <i class="fas fa-receipt"></i> View Order
+                            </button>
+                            <button type="button" class="btn btn-primary" id="continue-shopping-after">
+                                Continue Shopping <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" id="product-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="product-modal-body">
+                <!-- Product details will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order History Modal -->
+    <div class="modal" id="orders-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-receipt"></i> My Orders</h2>
+                <button class="modal-close" id="orders-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="orders-container" id="orders-container">
+                    <!-- Orders will be loaded dynamically -->
+                    <div class="orders-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading your orders...</p>
+                    </div>
+                </div>
+                <div class="orders-pagination" id="orders-pagination">
+                    <!-- Pagination will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="order-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-box"></i> Order Details</h2>
+                <button class="modal-close" id="order-details-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="order-details-body">
+                <!-- Order details will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-edit"></i> My Profile</h2>
+                <button class="modal-close" id="profile-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-container">
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar">U</div>
+                        <div class="profile-header-info">
+                            <h3 id="profile-display-name">User Name</h3>
+                            <p id="profile-member-since">Member since 2025</p>
+                        </div>
+                    </div>
+
+                    <!-- Profile Tabs -->
+                    <div class="profile-tabs">
+                        <button class="profile-tab active" data-tab="info">
+                            <i class="fas fa-info-circle"></i> Personal Info
+                        </button>
+                        <button class="profile-tab" data-tab="password">
+                            <i class="fas fa-lock"></i> Change Password
+                        </button>
+                    </div>
+
+                    <!-- Personal Info Tab -->
+                    <div class="profile-tab-content active" id="tab-info">
+                        <form class="profile-form" id="profile-info-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-firstname">First Name</label>
+                                    <input type="text" id="profile-firstname" placeholder="Your first name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-lastname">Last Name</label>
+                                    <input type="text" id="profile-lastname" placeholder="Your last name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-username">Username</label>
+                                <input type="text" id="profile-username" placeholder="Your username">
+                                <small class="form-hint">Letters, numbers, underscores, hyphens (min 3 chars)</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-email">Email Address</label>
+                                <input type="email" id="profile-email" placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-phone">Phone Number</label>
+                                <input type="tel" id="profile-phone" placeholder="+234 800 000 0000">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Change Password Tab -->
+                    <div class="profile-tab-content" id="tab-password">
+                        <form class="profile-form" id="profile-password-form">
+                            <div class="form-group">
+                                <label for="profile-new-password">New Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="profile-new-password" placeholder="Enter new password" minlength="6">
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="form-hint">Password must be at least 6 characters</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-confirm-password">Confirm New Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="profile-confirm-password" placeholder="Confirm new password">
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-key"></i> Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div class="modal" id="reset-password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> Reset Password</h2>
+                <button class="modal-close" id="reset-password-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="auth-form" id="reset-password-form">
+                    <p class="auth-form-desc">Enter your new password below.</p>
+                    <div class="form-group">
+                        <input type="password" id="reset-new-password" placeholder="New Password" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="reset-confirm-password" placeholder="Confirm New Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Reset Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Paystack SDK -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/utils.js?v=12"></script>
+    <script src="js/api.js?v=12"></script>
+    <script src="js/auth.js?v=11"></script>
+    <script src="js/cart.js?v=11"></script>
+    <script src="js/toast.js?v=11"></script>
+    <script src="js/wishlist.js?v=11"></script>
+    <script src="js/app.js?v=11"></script>
+</body>
+</html>
+

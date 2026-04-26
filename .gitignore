@@ -1,0 +1,66 @@
+# --- Environment Variables (SENSITIVE!) ---
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# --- Python & Backend ---
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+backend/venv/
+backend/.venv/
+
+# Database files (contain user data)
+*.db
+*.sqlite
+*.sqlite3
+backend/src/database/app.db
+
+# --- Frontend & Node ---
+node_modules/
+.DS_Store
+dist/
+build/
+*.log
+npm-debug.log*
+
+# --- Local IDE files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS generated files ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Junk/Temporary files ---
+nul
+*.tmp
+*.temp
+*.bak
+
+# --- Secrets & Credentials ---
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# --- Vercel ---
+.vercel/
+.vercel

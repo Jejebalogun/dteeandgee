@@ -1,0 +1,37 @@
+# Render Blueprint - D'Tee & Gee Kitchen
+# Deploy with: Connect GitHub repo to Render Dashboard
+
+databases:
+  - name: dteeandgee-db
+    databaseName: dteeandgee
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: dteeandgee
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn src.main:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dteeandgee-db
+          property: connectionString
+      - key: PRODUCTION_DOMAIN
+        sync: false  # Set manually after deployment
+      - key: MONNIFY_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: MONNIFY_SECRET_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: MONNIFY_CONTRACT_CODE
+        sync: false  # Set manually in Render dashboard
+      - key: MONNIFY_BASE_URL
+        value: https://api.monnify.com  # Use https://sandbox.monnify.com for testing
+    healthCheckPath: /api/csrf-token

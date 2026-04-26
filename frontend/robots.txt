@@ -1,0 +1,45 @@
+# robots.txt for D'Tee & Gee Kitchen
+# Allows search engines to crawl the website while protecting sensitive areas
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /icons/
+Allow: /videos/
+Allow: /privacy-policy.html
+Allow: /terms-of-service.html
+
+# Disallow admin pages and sensitive areas
+Disallow: /admin.html
+Disallow: /admin/
+Disallow: /api/
+Disallow: /backend/
+Disallow: /*.db
+Disallow: /*.sql
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /__pycache__/
+
+# Sitemap
+Sitemap: https://dteeandgee.com/sitemap.xml
+
+# Crawl delay (optional - respectful crawling)
+Crawl-delay: 1
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
