@@ -179,25 +179,35 @@ def get_csrf_token():
 # This is done after blueprint registration below
 
 # Database configuration - supports both SQLite (local) and PostgreSQL (production)
-# Vercel Neon integration creates POSTGRES_URL automatically
-database_url = os.getenv('DATABASE_URL') or os.getenv('POSTGRES_URL')
+# Vercel Neon integration may use POSTGRES_URL, POSTGRES_URL_NON_POOLING,
+# POSTGRES_PRISMA_URL, or DATABASE_URL depending on the integration type.
+database_url = (os.getenv('DATABASE_URL')
+                or os.getenv('POSTGRES_URL')
+                or os.getenv('POSTGRES_URL_NON_POOLING')
+                or os.getenv('POSTGRES_PRISMA_URL'))
 
 is_memory_sqlite = False
+is_postgres = False
 if database_url:
     database_url = database_url.strip(' "\'')
-    # Handle Heroku/Render/Neon style postgres:// URLs for pg8000
-    if database_url.startswith('postgres://'):
-        database_url = database_url.replace('postgres://', 'postgresql+pg8000://', 1)
-    elif database_url.startswith('postgresql://'):
-        database_url = database_url.replace('postgresql://', 'postgresql+pg8000://', 1)
-        
-    # Neon specifically requires sslmode=require
-    if 'neon.tech' in database_url and 'sslmode' not in database_url:
-        if '?' in database_url:
-            database_url += '&sslmode=require'
-        else:
-            database_url += '?sslmode=require'
-            
+
+    # Detect PostgreSQL URLs
+    if database_url.startswith(('postgres://', 'postgresql://', 'postgresql+pg8000://')):
+        is_postgres = True
+        # Normalize to pg8000 driver prefix
+        if database_url.startswith('postgres://'):
+            database_url = 'postgresql+pg8000://' + database_url[len('postgres://'):]
+        elif database_url.startswith('postgresql://'):
+            database_url = 'postgresql+pg8000://' + database_url[len('postgresql://'):]
+        # pg8000 already — leave as-is
+
+        # pg8000 does NOT support sslmode in the query string.
+        # Strip it out — we pass SSL via connect_args instead.
+        import re
+        database_url = re.sub(r'[?&]sslmode=[^&]*', '', database_url)
+        # Clean up leftover ? or & at the end
+        database_url = database_url.rstrip('?&')
+
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     if database_url == 'sqlite:///:memory:':
         is_memory_sqlite = True
@@ -212,6 +222,12 @@ else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dteeandgee.db'
     is_memory_sqlite = False
 
+# Log the resolved database URI (mask password) for debugging
+_safe_uri = app.config['SQLALCHEMY_DATABASE_URI']
+if '@' in _safe_uri:
+    _safe_uri = _safe_uri.split('@')[0].rsplit(':', 1)[0] + ':***@' + _safe_uri.split('@', 1)[1]
+print(f"[DB] Using: {_safe_uri}")
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max upload
 
@@ -222,17 +238,25 @@ if is_memory_sqlite:
         'poolclass': StaticPool,
         'connect_args': {'check_same_thread': False},
     }
-else:
-    # PostgreSQL (Neon / Render / Railway) — use connection pooling
+elif is_postgres:
+    # PostgreSQL via pg8000 — SSL is required for Neon and most cloud providers
+    import ssl
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE  # Neon uses self-signed certs
+
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        'pool_recycle': 300,   # Recycle connections after 5 minutes
-        'pool_pre_ping': True, # Test connections before using
-        'pool_size': 5,        # Keep 5 connections in the pool
-        'max_overflow': 10,    # Allow up to 10 overflow connections
+        'pool_recycle': 300,
+        'pool_pre_ping': True,
+        'pool_size': 5,
+        'max_overflow': 10,
         'connect_args': {
-            'connect_timeout': 10 # 10 seconds timeout for serverless
+            'ssl_context': ssl_context,  # pg8000 uses ssl_context, NOT sslmode
         }
     }
+else:
+    # File-based SQLite — no special options needed
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {}
 db.init_app(app)
 
 with app.app_context():
