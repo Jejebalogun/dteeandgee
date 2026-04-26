@@ -172,13 +172,22 @@ if database_url:
     # Handle Heroku/Render/Neon style postgres:// URLs (SQLAlchemy requires postgresql://)
     if database_url.startswith('postgres://'):
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        
+    # Neon specifically requires sslmode=require
+    if 'neon.tech' in database_url and 'sslmode' not in database_url:
+        if '?' in database_url:
+            database_url += '&sslmode=require'
+        else:
+            database_url += '?sslmode=require'
+            
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     if database_url == 'sqlite:///:memory:':
         is_memory_sqlite = True
 else:
-    # Fallback to in-memory SQLite for local development when no DATABASE_URL is set
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    is_memory_sqlite = True
+    # Fallback to a persistent local SQLite file for local development
+    # so data is not wiped on every restart.
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dteeandgee.db'
+    is_memory_sqlite = False
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max upload
@@ -197,13 +206,16 @@ else:
         'pool_pre_ping': True, # Test connections before using
         'pool_size': 5,        # Keep 5 connections in the pool
         'max_overflow': 10,    # Allow up to 10 overflow connections
+        'connect_args': {
+            'connect_timeout': 10 # 10 seconds timeout for serverless
+        }
     }
 db.init_app(app)
 
 with app.app_context():
-    db.create_all()
     # Seed database if empty — runs for both SQLite (local) and PostgreSQL (production)
     try:
+        db.create_all()
         from src.models.user import Category, Product, User, Review
             
         # Check if tables exist and have data

@@ -704,7 +704,7 @@ class DTeeGeeApp {
       } else {
         suggestionsList.innerHTML = products.map(product => `
           <li class="search-suggestion" data-product-id="${product.id}" data-product-name="${Utils.sanitizeHtml(product.name)}">
-            <img src="${product.image_url || '/images/placeholder.jpg'}" alt="${Utils.sanitizeHtml(product.name)}" class="suggestion-image">
+            <img src="${product.image_url || '/images/Logo.jpg'}" alt="${Utils.sanitizeHtml(product.name)}" class="suggestion-image">
             <div class="suggestion-info">
               <span class="suggestion-name">${Utils.sanitizeHtml(product.name)}</span>
               <span class="suggestion-price">${Utils.formatCurrency(product.price)}</span>
@@ -1522,7 +1522,7 @@ class DTeeGeeApp {
         <div class="modal-body">
           <div class="quick-view-content">
             <div class="quick-view-image">
-              <img src="${product.image_url || '/images/placeholder.jpg'}" alt="${Utils.sanitizeHtml(product.name)}">
+              <img src="${product.image_url || '/images/Logo.jpg'}" alt="${Utils.sanitizeHtml(product.name)}">
               <div class="quick-view-stock-badge">${this.getStockBadge(product)}</div>
             </div>
             <div class="quick-view-details">
@@ -1716,7 +1716,7 @@ class DTeeGeeApp {
       return `
       <div class="related-product-card ${!canBuy ? 'out-of-stock-card' : ''}" data-product-id="${product.id}">
         <div class="related-product-badge">${this.getStockBadge(product)}</div>
-        <img src="${product.image_url || '/images/placeholder.jpg'}" alt="${Utils.sanitizeHtml(product.name)}">
+        <img src="${product.image_url || '/images/Logo.jpg'}" alt="${Utils.sanitizeHtml(product.name)}">
         <div class="related-product-info">
           <h4>${Utils.sanitizeHtml(product.name)}</h4>
           <span class="price">${Utils.formatCurrency(product.price)}</span>
@@ -1737,7 +1737,7 @@ class DTeeGeeApp {
 
     categoriesContainer.innerHTML = this.categories.map(category => `
       <div class="category-card animate-on-scroll" data-category="${category.name}">
-        <img src="${category.image_url || '/images/placeholder.jpg'}" 
+        <img src="${category.image_url || '/images/Logo.jpg'}" 
              alt="${category.name}" 
              class="category-image">
         <div class="category-content">
@@ -1861,7 +1861,7 @@ class DTeeGeeApp {
         <button class="wishlist-btn product-wishlist-btn" data-product-id="${product.id}" data-wishlist-product="${product.id}" title="Add to Wishlist">
           <i class="far fa-heart"></i>
         </button>
-        <img src="${product.image_url || '/images/placeholder.jpg'}"
+        <img src="${product.image_url || '/images/Logo.jpg'}"
              alt="${Utils.sanitizeHtml(product.name)}"
              class="product-image">
         <div class="product-content">
@@ -1918,7 +1918,7 @@ class DTeeGeeApp {
         <button class="wishlist-btn product-wishlist-btn" data-product-id="${product.id}" data-wishlist-product="${product.id}" title="Add to Wishlist">
           <i class="far fa-heart"></i>
         </button>
-        <img src="${product.image_url || '/images/placeholder.jpg'}"
+        <img src="${product.image_url || '/images/Logo.jpg'}"
              alt="${Utils.sanitizeHtml(product.name)}"
              class="product-image">
         <div class="product-content">
@@ -2159,7 +2159,7 @@ class DTeeGeeApp {
         <div class="order-body">
           <div class="order-items-preview">
             ${displayItems.map(item => `
-              <img src="${item.product?.image_url || '/images/placeholder.jpg'}"
+              <img src="${item.product?.image_url || '/images/Logo.jpg'}"
                    alt="${Utils.sanitizeHtml(item.product?.name || 'Product')}"
                    class="order-item-thumb">
             `).join('')}
@@ -2327,7 +2327,7 @@ class DTeeGeeApp {
           <h4><i class="fas fa-shopping-bag"></i> Order Items</h4>
           ${items.map(item => `
             <div class="order-item-row">
-              <img src="${item.product?.image_url || '/images/placeholder.jpg'}"
+              <img src="${item.product?.image_url || '/images/Logo.jpg'}"
                    alt="${Utils.sanitizeHtml(item.product?.name || 'Product')}"
                    class="order-item-image">
               <div class="order-item-details">
