@@ -155,6 +155,20 @@ def ratelimit_handler(e):
         'message': str(e.description)
     }), 429
 
+# Global error handler to ensure JSON responses for API
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Pass through HTTP errors
+    if hasattr(e, 'code'):
+        return jsonify({'error': str(e)}), e.code
+    # Handle non-HTTP exceptions
+    import traceback
+    return jsonify({
+        'error': 'Internal Server Error',
+        'message': str(e),
+        'traceback': traceback.format_exc()
+    }), 500
+
 # CSRF token endpoint for JavaScript frontend
 @app.route('/api/csrf-token', methods=['GET'])
 def get_csrf_token():
@@ -171,9 +185,11 @@ database_url = os.getenv('DATABASE_URL') or os.getenv('POSTGRES_URL')
 is_memory_sqlite = False
 if database_url:
     database_url = database_url.strip(' "\'')
-    # Handle Heroku/Render/Neon style postgres:// URLs (SQLAlchemy requires postgresql://)
+    # Handle Heroku/Render/Neon style postgres:// URLs for pg8000
     if database_url.startswith('postgres://'):
-        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        database_url = database_url.replace('postgres://', 'postgresql+pg8000://', 1)
+    elif database_url.startswith('postgresql://'):
+        database_url = database_url.replace('postgresql://', 'postgresql+pg8000://', 1)
         
     # Neon specifically requires sslmode=require
     if 'neon.tech' in database_url and 'sslmode' not in database_url:
