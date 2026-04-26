@@ -165,10 +165,12 @@ def get_csrf_token():
 # This is done after blueprint registration below
 
 # Database configuration - supports both SQLite (local) and PostgreSQL (production)
-database_url = os.getenv('DATABASE_URL')
+# Vercel Neon integration creates POSTGRES_URL automatically
+database_url = os.getenv('DATABASE_URL') or os.getenv('POSTGRES_URL')
 
 is_memory_sqlite = False
 if database_url:
+    database_url = database_url.strip(' "\'')
     # Handle Heroku/Render/Neon style postgres:// URLs (SQLAlchemy requires postgresql://)
     if database_url.startswith('postgres://'):
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
@@ -186,7 +188,12 @@ if database_url:
 else:
     # Fallback to a persistent local SQLite file for local development
     # so data is not wiped on every restart.
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dteeandgee.db'
+    # If running on Vercel without a DB configured, we must use /tmp/ because
+    # the main filesystem is read-only and will crash.
+    if os.getenv('VERCEL'):
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/dteeandgee.db'
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dteeandgee.db'
     is_memory_sqlite = False
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
