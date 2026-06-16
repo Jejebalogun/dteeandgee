@@ -11,10 +11,17 @@ if _backend_dir not in sys.path:
 if _project_root not in sys.path:
     sys.path.insert(0, _project_root)
 
-# ── Load .env (only matters locally; Vercel uses dashboard env vars) ──
-from dotenv import load_dotenv
-_env_path = os.path.join(_backend_dir, '.env')
-load_dotenv(_env_path)
+# ── Load .env (local dev only; Vercel uses dashboard env vars) ──
+try:
+    from dotenv import load_dotenv
+    _env_path = os.path.join(_backend_dir, '.env')
+    load_dotenv(_env_path)
+except Exception:
+    pass
 
-# ── Import the Flask app ───────────────────────────────────
+# ── Import and expose the Flask app ───────────────────────────────────
+# Vercel requires a top-level variable named "app", "application", or "handler"
 from src.main import app
+
+# Explicit alias so Vercel's static analyser always finds it
+application = app
