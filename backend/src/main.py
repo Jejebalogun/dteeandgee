@@ -377,9 +377,9 @@ def ensure_db_ready():
     _seed_database()
 
 # Also add a diagnostic endpoint so we can see what's happening on Vercel
-@app.route('/api/health')
+@app.route('/api/db-check')
 @limiter.exempt
-def health_check():
+def db_check():
     """Diagnostic endpoint to check DB connectivity and environment."""
     import time
     result = {
@@ -396,16 +396,40 @@ def health_check():
     else:
         result['db_host'] = 'sqlite'
 
-    # Test actual DB connectivity
-    try:
-        start = time.time()
-        with app.app_context():
+    # Test actual DB connectivity using raw psycopg2 (bypasses SQLAlchemy)
+    raw_url = os.getenv('DATABASE_URL') or os.getenv('POSTGRES_URL') or ''
+    if raw_url and raw_url.startswith(('postgres://', 'postgresql://')):
+        try:
+            import psycopg2
+            start = time.time()
+            # Normalize URL for psycopg2 (it only accepts postgresql://)
+            if raw_url.startswith('postgres://'):
+                raw_url = 'postgresql://' + raw_url[len('postgres://'):]
+            # Add connect_timeout
+            sep = '&' if '?' in raw_url else '?'
+            test_url = raw_url + sep + 'connect_timeout=5&sslmode=require'
+            conn = psycopg2.connect(test_url)
+            cur = conn.cursor()
+            cur.execute('SELECT 1')
+            cur.fetchone()
+            cur.close()
+            conn.close()
+            result['db_connected'] = True
+            result['db_latency_ms'] = round((time.time() - start) * 1000)
+        except Exception as e:
+            result['db_connected'] = False
+            result['db_error'] = str(e)
+            result['db_latency_ms'] = round((time.time() - start) * 1000)
+    else:
+        # SQLite test
+        try:
+            start = time.time()
             db.session.execute(db.text('SELECT 1'))
-        result['db_connected'] = True
-        result['db_latency_ms'] = round((time.time() - start) * 1000)
-    except Exception as e:
-        result['db_connected'] = False
-        result['db_error'] = str(e)
+            result['db_connected'] = True
+            result['db_latency_ms'] = round((time.time() - start) * 1000)
+        except Exception as e:
+            result['db_connected'] = False
+            result['db_error'] = str(e)
 
     return jsonify(result)
 
