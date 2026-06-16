@@ -190,24 +190,19 @@ is_postgres = False
 if database_url:
     database_url = database_url.strip(' "\'')
 
-    # Detect PostgreSQL URLs and normalize to pg8000 driver (pure Python, works on Vercel)
+    # Detect PostgreSQL URLs and normalize to psycopg2 driver
     # Supabase gives: postgresql://postgres:[pass]@db.[ref].supabase.co:5432/postgres
-    # Neon gives:     postgres://...
-    if database_url.startswith(('postgres://', 'postgresql://', 'postgresql+pg8000://')):
+    if database_url.startswith(('postgres://', 'postgresql://', 'postgresql+psycopg2://')):
         is_postgres = True
-        # Normalize to pg8000 driver prefix
+        # Normalize to psycopg2 driver prefix
         if database_url.startswith('postgres://'):
-            database_url = 'postgresql+pg8000://' + database_url[len('postgres://'):]
+            database_url = 'postgresql+psycopg2://' + database_url[len('postgres://'):]
         elif database_url.startswith('postgresql://'):
-            database_url = 'postgresql+pg8000://' + database_url[len('postgresql://'):]
-        # pg8000 already — leave as-is
+            database_url = 'postgresql+psycopg2://' + database_url[len('postgresql://'):]
 
-        # pg8000 does NOT support sslmode in the query string — strip it out.
-        # SSL is passed via ssl_context in connect_args instead.
-        import re
-        database_url = re.sub(r'[?&]sslmode=[^&]*', '', database_url)
-        # Clean up leftover ? or & at the end
-        database_url = database_url.rstrip('?&')
+        # Ensure sslmode=require is in the URL for Supabase / any cloud Postgres
+        if 'sslmode=' not in database_url:
+            database_url += ('&' if '?' in database_url else '?') + 'sslmode=require'
 
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     if database_url == 'sqlite:///:memory:':
@@ -237,21 +232,13 @@ if is_memory_sqlite:
         'connect_args': {'check_same_thread': False},
     }
 elif is_postgres:
-    # PostgreSQL via pg8000 — SSL is required for Supabase and all cloud providers.
-    # pg8000 uses ssl_context (a Python ssl.SSLContext object), NOT sslmode in the URL.
-    import ssl
-    ssl_context = ssl.create_default_context()
-    ssl_context.check_hostname = False
-    ssl_context.verify_mode = ssl.CERT_NONE  # Works with Supabase and Neon
-
+    # PostgreSQL via psycopg2 — SSL is handled via sslmode=require in the URL
+    # psycopg2 does NOT use ssl_context objects; sslmode in URL is sufficient
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_recycle': 300,
         'pool_pre_ping': True,
         'pool_size': 5,
         'max_overflow': 10,
-        'connect_args': {
-            'ssl_context': ssl_context,  # pg8000 SSL config
-        }
     }
 else:
     # File-based SQLite — no special options needed
