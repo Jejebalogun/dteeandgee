@@ -204,6 +204,10 @@ if database_url:
         if 'sslmode=' not in database_url:
             database_url += ('&' if '?' in database_url else '?') + 'sslmode=require'
 
+        # Add connect_timeout so Vercel functions fail fast instead of hanging
+        if 'connect_timeout=' not in database_url:
+            database_url += '&connect_timeout=5'
+
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     if database_url == 'sqlite:///:memory:':
         is_memory_sqlite = True
@@ -237,20 +241,31 @@ elif is_postgres:
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_recycle': 300,
         'pool_pre_ping': True,
-        'pool_size': 5,
-        'max_overflow': 10,
+        'pool_size': 2,
+        'max_overflow': 3,
     }
 else:
     # File-based SQLite — no special options needed
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {}
 db.init_app(app)
 
-with app.app_context():
-    # Seed database if empty — runs for both SQLite (local) and PostgreSQL (production)
+# ── Lazy database initialization ──
+# On Vercel, module-level DB calls block the cold start. If the DB is slow
+# or unreachable, the entire function times out before serving any request.
+# Instead, we seed on the first request using before_request.
+_db_initialized = False
+
+def _seed_database():
+    """Seed database with initial data if tables are empty."""
+    global _db_initialized
+    if _db_initialized:
+        return
+    _db_initialized = True
+
     try:
         db.create_all()
         from src.models.user import Category, Product, User, Review
-            
+
         # Check if tables exist and have data
         if Category.query.first() is None or Product.query.first() is None:
             print("[*] Seeding database with initial data...")
@@ -271,7 +286,7 @@ with app.app_context():
                 db.session.flush()
                 categories[idx + 1] = category.id
             db.session.commit()
-                
+
             # Seed products
             products_data = [
                     # Natural Drinks (Category 1)
@@ -329,7 +344,7 @@ with app.app_context():
             testuser.set_password('password123')
             db.session.add(testuser)
             db.session.commit()
-            
+
         # Create sample reviews for homepage carousel
         if Review.query.first() is None:
             testuser = User.query.filter_by(username='testuser').first()
@@ -355,6 +370,44 @@ with app.app_context():
         print(f"[!] Error during database setup: {e}")
         import traceback
         traceback.print_exc()
+
+@app.before_request
+def ensure_db_ready():
+    """Initialize and seed the database on the first request (lazy init)."""
+    _seed_database()
+
+# Also add a diagnostic endpoint so we can see what's happening on Vercel
+@app.route('/api/health')
+@limiter.exempt
+def health_check():
+    """Diagnostic endpoint to check DB connectivity and environment."""
+    import time
+    result = {
+        'status': 'ok',
+        'database_url_set': bool(os.getenv('DATABASE_URL')),
+        'postgres_url_set': bool(os.getenv('POSTGRES_URL')),
+        'is_vercel': bool(os.getenv('VERCEL')),
+        'db_type': 'postgres' if is_postgres else ('memory_sqlite' if is_memory_sqlite else 'file_sqlite'),
+    }
+    # Mask the actual URL but show the host
+    _uri = app.config.get('SQLALCHEMY_DATABASE_URI', '')
+    if '@' in _uri:
+        result['db_host'] = _uri.split('@')[1].split('/')[0]
+    else:
+        result['db_host'] = 'sqlite'
+
+    # Test actual DB connectivity
+    try:
+        start = time.time()
+        with app.app_context():
+            db.session.execute(db.text('SELECT 1'))
+        result['db_connected'] = True
+        result['db_latency_ms'] = round((time.time() - start) * 1000)
+    except Exception as e:
+        result['db_connected'] = False
+        result['db_error'] = str(e)
+
+    return jsonify(result)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
