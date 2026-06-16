@@ -381,6 +381,19 @@ def ensure_db_ready():
     if req.path in skip_paths:
         return
     _seed_database()
+# Simple ping — no DB, no complexity, just JSON
+@app.route('/api/ping')
+@limiter.exempt
+def ping():
+    """Dead simple endpoint to verify Flask routing works."""
+    from flask import request as req
+    return jsonify({
+        'pong': True,
+        'path': req.path,
+        'url': req.url,
+        'database_url_set': bool(os.getenv('DATABASE_URL')),
+        'is_vercel': bool(os.getenv('VERCEL')),
+    })
 
 # Also add a diagnostic endpoint so we can see what's happening on Vercel
 @app.route('/api/db-check')
