@@ -373,7 +373,13 @@ def _seed_database():
 
 @app.before_request
 def ensure_db_ready():
-    """Initialize and seed the database on the first request (lazy init)."""
+    """Initialize and seed the database on the first request (lazy init).
+    Skip for diagnostic and non-DB endpoints to avoid unnecessary delays."""
+    from flask import request as req
+    # Skip seeding for endpoints that don't need the database
+    skip_paths = ['/api/db-check', '/api/csrf-token', '/api/health']
+    if req.path in skip_paths:
+        return
     _seed_database()
 
 # Also add a diagnostic endpoint so we can see what's happening on Vercel
