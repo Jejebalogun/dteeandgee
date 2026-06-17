@@ -6,18 +6,14 @@
       "maxDuration": 60
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.py"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/",
-      "dest": "/frontend/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ]
 }
